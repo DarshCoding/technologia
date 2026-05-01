@@ -1,15 +1,51 @@
+import type { ComponentType } from 'react';
 import { Link, Outlet, useRouterState } from '@tanstack/react-router';
-import { Boxes, FolderKanban, LayoutDashboard, LogOut, Moon, Sun, User2 } from 'lucide-react';
+import {
+  BarChart3,
+  BriefcaseBusiness,
+  ChevronRight,
+  ClipboardList,
+  Contact2,
+  Factory,
+  FileText,
+  FolderKanban,
+  LayoutDashboard,
+  ListTodo,
+  LogOut,
+  Moon,
+  PackageCheck,
+  Settings,
+  ShoppingCart,
+  Sun,
+  Tag,
+  User2,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/auth.store';
 import { useThemeStore } from '@/stores/theme.store';
 
-const NAV = [
+type NavItem = {
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+  to?: string;
+};
+
+const NAV: NavItem[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/projects', label: 'Projects', icon: FolderKanban },
-  { to: '/items', label: 'Items', icon: Boxes },
-] as const;
+  { label: 'To Do List', icon: ListTodo },
+  { label: 'Reports', icon: BarChart3 },
+  { to: '/items', label: 'Items', icon: Tag },
+  { to: '/projects', label: 'Projects / BOM', icon: FolderKanban },
+  { label: 'Purchase Requisitions', icon: ClipboardList },
+  { label: 'Purchase Order', icon: ShoppingCart },
+  { label: 'Goods Received Notes / Receive Inventory', icon: PackageCheck },
+  { label: 'Material Releases / To Shop Floor', icon: Factory },
+  { label: 'Delivery Challans', icon: FileText },
+  { label: 'Contacts', icon: Contact2 },
+  { label: 'Business Entities', icon: BriefcaseBusiness },
+  { label: 'Configuration', icon: Settings },
+];
 
 export function AppShell() {
   const user = useAuthStore((s) => s.user);
@@ -29,22 +65,41 @@ export function AppShell() {
         </div>
         <nav className="flex flex-col gap-1">
           {NAV.map(({ to, label, icon: Icon }) => {
-            const active =
-              to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+            const isLink = Boolean(to);
+            const active = to
+              ? to === '/'
+                ? location.pathname === '/'
+                : location.pathname.startsWith(to)
+              : false;
+
+            if (isLink && to) {
+              return (
+                <Link
+                  key={label}
+                  to={to}
+                  className={cn(
+                    'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    active
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="min-w-0 flex-1 truncate">{label}</span>
+                </Link>
+              );
+            }
+
             return (
-              <Link
-                key={to}
-                to={to}
-                className={cn(
-                  'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                  active
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
-                )}
+              <div
+                key={label}
+                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground/90"
+                title="Coming soon"
               >
                 <Icon className="h-4 w-4" />
-                {label}
-              </Link>
+                <span className="min-w-0 flex-1 truncate">{label}</span>
+                <ChevronRight className="h-4 w-4 opacity-70" />
+              </div>
             );
           })}
         </nav>
@@ -71,7 +126,9 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
           <div className="text-sm text-muted-foreground">
-            {NAV.find((n) => (n.to === '/' ? location.pathname === '/' : location.pathname.startsWith(n.to)))
+            {NAV.find((n) =>
+              n.to ? (n.to === '/' ? location.pathname === '/' : location.pathname.startsWith(n.to)) : false,
+            )
               ?.label ?? ''}
           </div>
           <div className="flex items-center gap-2">
