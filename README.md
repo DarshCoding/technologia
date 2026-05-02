@@ -1,6 +1,6 @@
 # Technologia
 
-Modern starter for an ERP/quoting platform inspired by **QuotePlan**.
+Modern starter for an ERP/quoting platform
 
 - **Backend:** Python 3.12, FastAPI, SQLAlchemy 2 (async), Alembic, Pydantic v2, JWT auth, MySQL.
 - **Frontend:** Vite + React 18 + TypeScript, TanStack Query/Router, Tailwind v4, shadcn/ui, Zustand, React Hook Form + Zod.
