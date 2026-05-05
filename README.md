@@ -55,8 +55,7 @@ technologia/
 └── docker-compose.yml
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design rationale, and the
-[plan file](../.cursor/plans/) for the porting roadmap from `quoteplan/`.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design rationale
 
 ## Sample modules
 
@@ -64,5 +63,4 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design rationale, and t
 - **Projects** — CRUD with filtering / pagination.
 - **Items** — CRUD with SKU search.
 
-Each module is a vertical slice (model, schema, repository, service, route, React page),
-ready to copy when porting more modules from `quoteplan`.
+Each module is a vertical slice (model, schema, repository, service, route, React page)
